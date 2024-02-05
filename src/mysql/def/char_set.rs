@@ -88,6 +88,8 @@ pub enum CharSet {
     Utf32,
     #[iden = "utf8"]
     Utf8,
+    #[iden = "utf8mb3"]
+    Utf8Mb3,
     #[iden = "utf8mb4"]
     Utf8Mb4,
     #[method = "unknown_to_string"]
@@ -439,6 +441,8 @@ pub enum Collation {
     Utf32VietnameseCi,
     #[iden = "utf8_general_ci"]
     Utf8GeneralCi,
+    #[iden = "utf8mb3_general_ci"]
+    Utf8Mb3GeneralCi,
     #[iden = "utf8_tolower_ci"]
     Utf8TolowerCi,
     #[iden = "utf8_bin"]
@@ -690,6 +694,7 @@ impl CharSet {
             Self::Utf16Le => "UTF-16LE Unicode".to_owned(),
             Self::Utf32 => "UTF-32 Unicode".to_owned(),
             Self::Utf8 => "UTF-8 Unicode".to_owned(),
+            Self::Utf8Mb3 => "UTF-8 Unicode".to_owned(),
             Self::Utf8Mb4 => "UTF-8 Unicode".to_owned(),
             Self::Unknown(_) => "Unknown".to_owned(),
         }
@@ -737,6 +742,7 @@ impl CharSet {
             Self::Utf16Le => Collation::Utf16LeGeneralCi,
             Self::Utf32 => Collation::Utf32GeneralCi,
             Self::Utf8 => Collation::Utf8GeneralCi,
+            Self::Utf8Mb3 => Collation::Utf8Mb3GeneralCi,
             Self::Utf8Mb4 => Collation::Utf8Mb40900AiCi,
             Self::Unknown(_) => panic!("unknown"),
         }
@@ -784,6 +790,7 @@ impl CharSet {
             Self::Utf16Le => 4,
             Self::Utf32 => 4,
             Self::Utf8 => 3,
+            Self::Utf8Mb3 => 3,
             Self::Utf8Mb4 => 4,
             Self::Unknown(_) => panic!("unknown"),
         }
@@ -1002,6 +1009,7 @@ impl Collation {
             Self::Utf8VietnameseCi => CharSet::Utf8,
             Self::Utf8GeneralMysql500Ci => CharSet::Utf8,
             Self::Utf8Mb4GeneralCi => CharSet::Utf8Mb4,
+            Self::Utf8Mb3GeneralCi => CharSet::Utf8Mb3,
             Self::Utf8Mb4Bin => CharSet::Utf8Mb4,
             Self::Utf8Mb4UnicodeCi => CharSet::Utf8Mb4,
             Self::Utf8Mb4IcelandicCi => CharSet::Utf8Mb4,

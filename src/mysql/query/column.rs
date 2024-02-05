@@ -66,6 +66,8 @@ impl SchemaQueryBuilder {
                 },
             )
             .column(ColumnFields::ColumnComment)
+            .column(ColumnFields::CharacterSetName)
+            .column(ColumnFields::CollationName)
             .from((InformationSchema::Schema, InformationSchema::Columns))
             .and_where(Expr::col(ColumnFields::TableSchema).eq(schema.to_string()))
             .and_where(Expr::col(ColumnFields::TableName).eq(table.to_string()))
@@ -78,9 +80,28 @@ impl SchemaQueryBuilder {
 impl From<&MySqlRow> for ColumnQueryResult {
     fn from(row: &MySqlRow) -> Self {
         use crate::sqlx_types::Row;
+
+        let mut column_type: String = row.get(1);
+        let character_set_name: Option<String> = row.get(8);
+        match character_set_name {
+            None => {}
+            Some(c) => {
+                column_type.push_str(" CHARACTER SET ");
+                column_type.push_str(&c);
+            }
+        }
+        let collation_name: Option<String> = row.get(9);
+        match collation_name {
+            None => {}
+            Some(c) => {
+                column_type.push_str(" COLLATE ");
+                column_type.push_str(&c);
+            }
+        }
+
         Self {
             column_name: row.get(0),
-            column_type: row.get(1),
+            column_type,
             is_nullable: row.get(2),
             column_key: row.get(3),
             column_default: row.get(4),
